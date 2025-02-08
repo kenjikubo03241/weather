@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>警報・注意報情報</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fc;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #2e3b8d;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .city-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .city-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .city-title {
+            font-size: 18px;
+            color: #444;
+            background-color: #e0e7ff;
+            padding: 6px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        .warnings {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* リストのマーカー（・）を削除 */
+        .warnings ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .warning {
+            background-color: #fff;
+            border-left: 4px solid #ffc107;
+            padding: 5px;
+            margin-bottom: 6px;
+            border-radius: 5px;
+            font-size: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 警報が発表された場合、赤色で強調 */
+        .warning.red {
+            border-left-color: #ff4c4c;
+            color: #ff4c4c;
+        }
+
+        /* 警報がない場合のスタイル */
+        .no-warning {
+            color: #333;
+            font-style: italic;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>警報・注意報情報</h1>
+
+    <div class="container">
+        {% for city in city_warning_texts %}
+            <div class="city-card">
+                <div class="city-title">{{ city.area }}</div>
+                <div class="warnings">
+                    {% if city.warnings %}
+                        <ul>
+                            {% for warning in city.warnings %}
+                                <li class="warning {% if '大雨' in warning or '警報' in warning %}red{% endif %}">
+                                    {{ warning }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="no-warning">現在発表警報・注意報はありません。</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
